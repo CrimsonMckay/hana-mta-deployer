@@ -1,0 +1,16 @@
+{
+  "name": "hana-mta-deployer",
+  "version": "1.0.0",
+  "description": "An npm package that streamlines the deployment process for SAP HANA projects with MTA (multi-target application) architecture. With hana-mta-deployer, simply run a single command to add HANA support, generate an MTA deployment file, modify the file as needed, update your package lock, build your project, and deploy it to your Cloud Foundry environment. Say goodbye to time-consuming manual deployments and hello to streamlined, hassle-free automation.",
+  "main": "index.js",
+  "bin": {
+    "hmd": "./index.js"
+  },
+  "scripts": {},
+  "author": "Jude Edem Nyahe",
+  "license": "MIT",
+  "dependencies": {
+    "prompts": "^2.4.2",
+    "replace-in-file": "^6.3.5"
+  }
+}
