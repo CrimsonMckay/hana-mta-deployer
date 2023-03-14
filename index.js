@@ -4,6 +4,49 @@ const { execSync } = require("child_process");
 const replaceInFile = require("replace-in-file");
 const prompts = require("prompts");
 
+async function checkDependencies() {
+  let missingDeps = [];
+
+  try {
+    execSync("cf --version", { stdio: "ignore" });
+  } catch (error) {
+    missingDeps.push("Cloud Foundry CLI");
+  }
+
+  try {
+    execSync("make --version", { stdio: "ignore" });
+  } catch (error) {
+    missingDeps.push("make");
+  }
+
+  try {
+    execSync("mbt --version", { stdio: "ignore" });
+  } catch (error) {
+    missingDeps.push("MBT Build Tool");
+  }
+
+  try {
+    execSync("cds --version", { stdio: "ignore" });
+  } catch (error) {
+    missingDeps.push("@sap/cds");
+  }
+
+  try {
+    execSync("cf plugins", { stdio: "ignore" });
+  } catch (error) {
+    missingDeps.push("MultiApps CF CLI Plugin");
+  }
+
+  if (missingDeps.length > 0) {
+    console.log(
+      "The following dependencies are missing and must be installed manually in order to use this package:"
+    );
+    console.log("- " + missingDeps.join("\n- "));
+  } else {
+    console.log("All required dependencies are installed.");
+  }
+}
+
 async function checkLoggedIn() {
   let loggedIn = false;
 
@@ -92,7 +135,11 @@ async function deploy(secure = false) {
   }
 }
 
-if (process.argv[2] === "deploy") {
+if (process.argv[2] === "--version" || process.argv[2] === "-v") {
+  console.log(require("./package.json").version);
+} else if (process.argv[2] === "-check") {
+  checkDependencies();
+} else if (process.argv[2] === "deploy") {
   if (process.argv[3] === "--secure") {
     deploy(true);
   } else {
